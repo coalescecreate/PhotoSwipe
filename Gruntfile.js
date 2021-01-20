@@ -1,3 +1,4 @@
+const sass = require('node-sass');
 /**
  * 
  * Run 'grunt' to generate JS and CSS in folder 'dist' and site in folder '_site'
@@ -42,9 +43,13 @@ module.exports = function(grunt) {
       files: ['dist']
     },
     
-    sass: {                            
-      dist: {                      
-        files: {      
+    sass: {
+      options: {
+        implementation: sass,
+        sourceMap: true
+      },
+      dist: {
+        files: {
           'dist/photoswipe.css': 'src/css/main.scss',
           'dist/default-skin/default-skin.css': 'src/css/default-skin/default-skin.scss'
         }

@@ -1,6 +1,6 @@
-/*! PhotoSwipe - v4.1.3 - 2019-01-08
+/*! PhotoSwipe - v4.1.3 - 2021-01-20
 * http://photoswipe.com
-* Copyright (c) 2019 Dmitry Semenov; */
+* Copyright (c) 2021 Dmitry Semenov; */
 (function (root, factory) { 
 	if (typeof define === 'function' && define.amd) {
 		define(factory);
@@ -2725,12 +2725,12 @@ var _getItemAt,
 		var bounds = item.bounds;
 
 		// position of element when it's centered
-		bounds.center.x = Math.round((_tempPanAreaSize.x - realPanElementW) / 2);
+		bounds.center.x = Math.round((_tempPanAreaSize.x - realPanElementW) / 2) + item.hGap.left;
 		bounds.center.y = Math.round((_tempPanAreaSize.y - realPanElementH) / 2) + item.vGap.top;
 
 		// maximum pan position
 		bounds.max.x = (realPanElementW > _tempPanAreaSize.x) ? 
-							Math.round(_tempPanAreaSize.x - realPanElementW) : 
+							Math.round(_tempPanAreaSize.x - realPanElementW) + item.hGap.left:
 							bounds.center.x;
 		
 		bounds.max.y = (realPanElementH > _tempPanAreaSize.y) ? 
@@ -2738,7 +2738,7 @@ var _getItemAt,
 							bounds.center.y;
 		
 		// minimum pan position
-		bounds.min.x = (realPanElementW > _tempPanAreaSize.x) ? 0 : bounds.center.x;
+		bounds.min.x = (realPanElementW > _tempPanAreaSize.x) ? item.hGap.left : bounds.center.x;
 		bounds.min.y = (realPanElementH > _tempPanAreaSize.y) ? item.vGap.top : bounds.center.y;
 	},
 	_calculateItemSize = function(item, viewportSize, zoomLevel) {
@@ -2750,12 +2750,17 @@ var _getItemAt,
 				if(!item.vGap) {
 					item.vGap = {top:0,bottom:0};
 				}
+				if(!item.hGap) {
+				  item.hGap = {left:0,right:0};
+				}
 				// allows overriding vertical margin for individual items
 				_shout('parseVerticalMargin', item);
+				// allows overriding horizontal margin for individual items
+				_shout('parseHorizontalMargin', item);
 			}
 
 
-			_tempPanAreaSize.x = viewportSize.x;
+			_tempPanAreaSize.x = viewportSize.x - item.hGap.left - item.hGap.right;
 			_tempPanAreaSize.y = viewportSize.y - item.vGap.top - item.vGap.bottom;
 
 			if (isInitial) {
