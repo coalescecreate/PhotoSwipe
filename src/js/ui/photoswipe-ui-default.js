@@ -361,7 +361,8 @@ var PhotoSwipeUI_Default =
 				// height of top bar is static, no need to calculate it
 				gap.top = bars.top;
 			} else {
-				gap.top = gap.bottom = 0;
+				gap.top = bars.top;
+				gap.bottom = bars.bottom;
 			}
 
       item.hGap.left = bars.left;
